@@ -2,9 +2,22 @@
 let url = 'http://localhost:5000/user/signUp'
 let submitFrom = document.getElementById('submitBtn');
 
+
+function showNotification(msg, color) {
+  let notification = document.getElementById('notification');
+
+  notification.style.opacity = 1;
+  notification.style.backgroundColor = color;
+  notification.innerHTML = msg;
+  setTimeout(() => {
+    notification.style.opacity = 0;
+  }, 3000)
+}
+
+
 submitFrom.addEventListener('click', async (e) => {
   try {
-    e.preventDefault()
+    e.preventDefault();
 
     let obj = {
       userName: document.getElementById('userName').value,
@@ -14,13 +27,13 @@ submitFrom.addEventListener('click', async (e) => {
     }
     axios.post(url, obj, { headers: { 'Content-Type': 'application/json' } })
       .then((response) => {
-        console.log(JSON.stringify(response.data));
+        showNotification('Account created successfully','green');
       })
       .catch((error) => {
-        console.log(error);
+        showNotification(error.response.data.msg, 'red');
       });
   }
   catch (err) {
-    console.log(err)
+    // console.log(err)
   }
 })

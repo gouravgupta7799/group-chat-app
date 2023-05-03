@@ -13,7 +13,7 @@ exports.signupNewUser = async (req, res, next) => {
   try {
     let alreadyexist = await User.findOne({ where: { userEmail: req.body.userEmail } });
     if (alreadyexist) {
-      res.status(203).json({ msg: 'user already exist' });
+      res.status(403).json({ msg: 'User already exist' });
     } else if (!alreadyexist) {
       let salt = 5
       bcrypt.hash(req.body.userPassword, salt, async (err, hash) => {
