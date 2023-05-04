@@ -21,4 +21,4 @@ sequelize
   .catch(err => console.log(err))
 
 
-app.listen(5000);
+app.listen(4000);

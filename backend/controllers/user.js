@@ -22,19 +22,38 @@ exports.signupNewUser = async (req, res, next) => {
           userContect: req.body.userContect,
           userEmail: req.body.userEmail,
           userPassword: hash,
-        })
-        res.status(201).json({ newUser })
+        });
+        res.status(201).json({ newUser });
+      });
+    };
+  }
+  catch (err) {
+    res.status(500).json({ err });
+    console.log(err);
+  };
+};
+
+exports.loginUser = async (req, res, next) => {
+  try {
+    let email = req.body.userEmail;
+    let Password = req.body.userPassword;
+
+    let foundEmail = await User.findOne({ where: { userEmail: email } });
+    if (!foundEmail) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+    if (foundEmail) {
+      bcrypt.compare(Password, foundEmail.userPassword, async (err, pass) => {
+        if (pass) {
+          res.status(200).json({ success: true, msg: "created sucsessfully", token: generateToken(foundEmail.id) })
+        } else {
+          res.status(401).json({ msg: `User not authorized,invalid password` });
+        }
       })
     }
   }
   catch (err) {
-    res.status(500).json({ err })
+    res.json(err)
     console.log(err)
   }
-}
-
-
-exports.loginUser = (req, res, next) => {
-  console.log(req.body)
-
 }

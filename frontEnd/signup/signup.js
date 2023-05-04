@@ -1,5 +1,5 @@
 
-let url = 'http://localhost:5000/user/signUp'
+let url = 'http://localhost:4000/user/signUp'
 let submitFrom = document.getElementById('submitBtn');
 
 
@@ -27,9 +27,10 @@ submitFrom.addEventListener('click', async (e) => {
     }
     axios.post(url, obj, { headers: { 'Content-Type': 'application/json' } })
       .then((response) => {
-        showNotification('Account created successfully','green');
+        showNotification('Account created successfully', 'green');
       })
       .catch((error) => {
+        console.log(error)
         showNotification(error.response.data.msg, 'red');
       });
   }

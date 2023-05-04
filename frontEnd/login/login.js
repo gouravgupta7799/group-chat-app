@@ -1,6 +1,7 @@
 
 
-let url = 'http://localhost:5000/user/login'
+let url = 'http://localhost:4000/user/login'
+let token = localStorage.getItem('token');
 
 let submitFrom = document.getElementById('submitBtn');
 
@@ -26,9 +27,11 @@ submitFrom.addEventListener('click', async (e) => {
   axios.post(url, obj, { headers: { 'Content-Type': 'application/json' } })
     .then((response) => {
       showNotification('Account loged successfully', 'green');
+      localStorage.setItem('token', response.data.token)
     })
     .catch((error) => {
       showNotification(error.response.data.msg, 'red');
+      console.log(error)
     });
 })
 
