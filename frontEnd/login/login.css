@@ -1,0 +1,83 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 95vh;
+}
+
+.outerBody {
+  /* background: white; */
+  border: 1px solid rgb(230, 226, 226);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 10px 10px 10px 0px rgba(13, 115, 146, 0.274);
+}
+
+#loginForm {
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  max-width: 800px;
+  width: 60vw;
+  justify-content: center;
+  align-items: center;
+}
+
+input {
+  outline: none;
+  font-size: large;
+  margin: 30px;
+  text-decoration: none;
+  border: none;
+  border-bottom: 1px solid rgb(230, 226, 226);
+  font-size: large;
+  width: 100%;
+  max-width: 430px;
+}
+
+input:focus {
+  border-color: black;
+}
+
+.btn {
+  display: flex;
+  font-size: large;
+  justify-content: center;
+  color: rgb(255, 255, 255);
+  background-color: rgb(13, 115, 146);
+  padding: 7px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+}
+
+.btn:hover {
+  background-color: rgb(22, 104, 22);
+}
+
+#notification {
+  color: white;
+  width: fit-content;
+  opacity: 0;
+  position: fixed;
+  top: 50px;
+  margin: auto;
+  padding: 3px;
+  border-radius: 5px;
+  transition: opacity 0.5s linear;
+}
+
+.flot{
+  display: flex;
+}
+
+.flot button{
+  margin: 5px;
+}
+
+.headline{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
