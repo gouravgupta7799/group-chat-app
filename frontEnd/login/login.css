@@ -1,13 +1,9 @@
 body {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   min-height: 95vh;
+  padding: 0 300px;
 }
 
 .outerBody {
-  /* background: white; */
   border: 1px solid rgb(230, 226, 226);
   border-radius: 20px;
   padding: 30px;
@@ -77,7 +73,5 @@ input:focus {
 }
 
 .headline{
-  display: flex;
-  justify-content: center;
-  align-items: center;
+color: rgb(17, 31, 231);
 }
