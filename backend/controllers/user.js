@@ -5,8 +5,8 @@ const User = require('../models/user.js');
 // let id = uuid.v4()
 let JWT = require('jsonwebtoken');
 
-function generateToken(id) {
-  return JWT.sign({ userId: id }, process.env.JWT_SECRET)
+function generateToken(Id) {
+  return JWT.sign({ userId: Id }, process.env.JWT_SECRET)
 }
 
 exports.signupNewUser = async (req, res, next) => {
@@ -45,7 +45,8 @@ exports.loginUser = async (req, res, next) => {
     if (foundEmail) {
       bcrypt.compare(Password, foundEmail.userPassword, async (err, pass) => {
         if (pass) {
-          res.status(200).json({ success: true, msg: "created sucsessfully", token: generateToken(foundEmail.id) })
+
+          res.status(200).json({ success: true, msg: "created sucsessfully", token: generateToken(foundEmail.Id) })
         } else {
           res.status(401).json({ msg: `User not authorized,invalid password` });
         }
