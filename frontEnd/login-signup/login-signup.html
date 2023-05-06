@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./login-signup.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+
+  <body>
+    <!-- <div id="notification"></div> -->
+    <div class="heading-background"></div>
+
+    <div class="main">
+      <div class="headline">
+        <div id="logo"> <img src="../WhatsApp.svg.webp" alt="WhatsApp"></div>
+        <div>
+          WHATSAPP
+        </div>
+      </div>
+      <div class="form-background">
+        <div id="toggle-tab">
+          <div id="login-tab" class="tab active-tab">Login</div>
+          <div id="signup-tab" class="tab">Sign Up</div>
+        </div>
+        <form id="login-form" class="active-form">
+          <input type="email" id="loginUserEmail" placeholder="Email" required>
+          <input type="password" id="loginUserPassword" placeholder="Password" required>
+          <button class="btn" id="loginBtn">Login</button>
+        </form>
+        <form id="signup-form">
+          <input type="text" id="signupUserName" placeholder="Name" required>
+          <input type="email" id="signupUserEmail" placeholder="Email" required>
+          <input type="text" id="signupUserContect" placeholder="Mobile" required>
+          <input type="password" id="signupUserPassword" placeholder="Password" required>
+          <button class="btn" id="signupBtn">Sign Up</button>
+        </form>
+      </div>
+    </div>
+  </body>
+  <script src="./login-signup.js"></script>
+
+</html>

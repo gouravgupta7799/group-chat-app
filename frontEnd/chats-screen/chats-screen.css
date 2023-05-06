@@ -1,0 +1,179 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #eae6df;
+}
+
+.container {
+  position: absolute;
+  top: 0px;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#left-box {
+  height: inherit;
+  width: 30%;
+  min-width: 300px;
+  background-color: white;
+  box-shadow: 1px 1px 8px 1px rgba(0, 0, 0, 0.075);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#right-box {
+  height: inherit;
+  width: 70%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+}
+
+#left-header {
+  background: rgba(160, 160, 160, 0.075);
+  border-bottom: 1px solid rgb(233, 233, 233);
+  display: flex;
+  align-items: center;
+  height: 10vh;
+}
+
+#right-header {
+  box-sizing: border-box;
+  background: rgba(160, 160, 160, 0.075);
+  border-bottom: 1px solid rgb(233, 233, 233);
+  display: flex;
+  align-items: center;
+  height: 10vh;
+  padding: 0 15px;
+  width: 100%;
+
+}
+
+#logo>img {
+  height: 10vh;
+  width: 10vh;
+}
+
+#left-content {
+  height: 90vh;
+}
+
+#right-content {
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#group-list {
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+}
+
+#group-list>li {
+  overflow: hidden;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  font-size: larger;
+  border-bottom: 1px solid rgb(233, 233, 233);
+  height: 10vh;
+  cursor: pointer;
+}
+
+#group-list>li:hover {
+  background: rgba(160, 160, 160, 0.04);
+}
+
+.active-group {
+  background: rgba(160, 160, 160, 0.075) !important;
+}
+
+
+#group-name-headline {
+  font-size: larger;
+}
+
+#massage-input-box {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  background: rgb(233, 233, 233);
+  width: 100%;
+  height: 10vh;
+  margin-top: auto;
+
+}
+
+#massege-input {
+  margin: 10px;
+  width: 86%;
+  height: 45px;
+  border-radius: 8px;
+  border-style: none;
+  outline: none;
+  font-size: large;
+}
+
+#send-btn {
+  font-size: larger;
+  color: white;
+  background: #08b81f;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+#chats {
+  height: 90%;
+  width: 100%;
+  padding: 10px;
+  background: rgb(239, 234, 226);
+  overflow: auto;
+}
+
+#chats>div {
+  display: flex;
+  width: fit-content;
+  min-width: 200px;
+  border-radius: 10px;
+  justify-content: center;
+  height: fit-content;
+  max-width: 40%;
+  padding: 5px;
+  margin-bottom: 5px;
+}
+
+#mid {
+  margin: auto;
+  background: #dde0e6d0;
+  padding:1px 0 !important;
+
+}
+
+#left {
+  margin-right: auto;
+  background:white ;
+}
+
+#right {
+  margin-left: auto;
+  background: #b9df74;
+}

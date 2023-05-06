@@ -5,8 +5,8 @@ const User = require('../models/user.js');
 // let id = uuid.v4()
 let JWT = require('jsonwebtoken');
 
-function generateToken(Id) {
-  return JWT.sign({ userId: Id }, process.env.JWT_SECRET)
+function generateToken(Id, name) {
+  return JWT.sign({ userId: Id, userName: name }, process.env.JWT_SECRET)
 }
 
 exports.signupNewUser = async (req, res, next) => {
@@ -23,7 +23,7 @@ exports.signupNewUser = async (req, res, next) => {
           userEmail: req.body.userEmail,
           userPassword: hash,
         });
-        res.status(201).json({ newUser });
+        login(newUser.userEmail, req.body.userPassword, res);
       });
     };
   }
@@ -36,25 +36,34 @@ exports.signupNewUser = async (req, res, next) => {
 exports.loginUser = async (req, res, next) => {
   try {
     let email = req.body.userEmail;
-    let Password = req.body.userPassword;
-
-    let foundEmail = await User.findOne({ where: { userEmail: email } });
-    if (!foundEmail) {
-      return res.status(404).json({ msg: 'User not found' });
-    }
-    if (foundEmail) {
-      bcrypt.compare(Password, foundEmail.userPassword, async (err, pass) => {
-        if (pass) {
-
-          res.status(200).json({ success: true, msg: "created sucsessfully", token: generateToken(foundEmail.Id) })
-        } else {
-          res.status(401).json({ msg: `User not authorized,invalid password` });
-        }
-      })
-    }
+    let password = req.body.userPassword;
+    login(email, password, res);
   }
   catch (err) {
     res.json(err)
     console.log(err)
+  }
+}
+
+let login = async (email, password, res) => {
+  let foundEmail = await User.findOne({ where: { userEmail: email } });
+  if (!foundEmail) {
+    return res.status(404).json({ msg: 'User not found' });
+  }
+  if (foundEmail) {
+    bcrypt.compare(password, foundEmail.userPassword, async (err, pass) => {
+      if (pass) {
+        let newUser = {
+          createdAt: foundEmail.createdAt,
+          updatedAt: foundEmail.updatedAt,
+          userContect: foundEmail.userContect,
+          userEmail: foundEmail.userEmail,
+          userName: foundEmail.userName
+        };
+        res.status(200).json({ success: true, msg: "created sucsessfully", user: newUser, token: generateToken(foundEmail.Id, foundEmail.userName) })
+      } else {
+        res.status(401).json({ msg: `User not authorized,invalid password` });
+      }
+    })
   }
 }
