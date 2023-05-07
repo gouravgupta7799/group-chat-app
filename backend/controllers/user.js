@@ -1,9 +1,10 @@
 
 const bcrypt = require('bcrypt');
-const User = require('../models/user.js');
 // let uuid = require('uuid');
 // let id = uuid.v4()
 let JWT = require('jsonwebtoken');
+const User = require('../models/user.js');
+const Message = require("../models/message");
 
 function generateToken(Id, name) {
   return JWT.sign({ userId: Id, userName: name }, process.env.JWT_SECRET)
@@ -23,6 +24,9 @@ exports.signupNewUser = async (req, res, next) => {
           userEmail: req.body.userEmail,
           userPassword: hash,
         });
+        let joinGroup = Message.create({
+          chats: `${newUser.userName} joined the group`
+        })
         login(newUser.userEmail, req.body.userPassword, res);
       });
     };

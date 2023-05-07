@@ -71,7 +71,9 @@ loginForm.addEventListener('submit', async (e) => {
     .then((response) => {
       showNotification(createNotification('Account loged successfully', SUCCESS_COLOR));
       localStorage.setItem('token', response.data.token);
-      // location.href = 'http://127.0.0.1:5500/chatapp/chatapp.html';
+      setTimeout(() => {
+        location.href = 'http://127.0.0.1:5500/chats-screen/chats-screen.html';
+      }, 3000);
       console.log(response);
     })
     .catch((error) => {
@@ -91,7 +93,9 @@ signupForm.addEventListener('submit', async (e) => {
     .then((response) => {
       showNotification(createNotification('Account created successfully', SUCCESS_COLOR));
       localStorage.setItem('token', response.data.token);
-      console.log(response);
+      setTimeout(() => {
+        location.href = 'http://127.0.0.1:5500/chats-screen/chats-screen.html';
+      }, 3000);
     })
     .catch((error) => {
       console.log(error);

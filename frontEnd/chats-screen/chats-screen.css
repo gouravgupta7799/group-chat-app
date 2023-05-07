@@ -45,7 +45,7 @@ body {
 }
 
 #left-header {
-  background: rgba(160, 160, 160, 0.075);
+  background: rgb(240, 242, 245);
   border-bottom: 1px solid rgb(233, 233, 233);
   display: flex;
   align-items: center;
@@ -54,7 +54,7 @@ body {
 
 #right-header {
   box-sizing: border-box;
-  background: rgba(160, 160, 160, 0.075);
+  background: rgb(240, 242, 245);
   border-bottom: 1px solid rgb(233, 233, 233);
   display: flex;
   align-items: center;
@@ -102,7 +102,7 @@ body {
 }
 
 .active-group {
-  background: rgba(160, 160, 160, 0.075) !important;
+  background: rgb(240, 242, 245) !important;
 }
 
 
@@ -114,22 +114,31 @@ body {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  background: rgb(233, 233, 233);
+  background: rgb(240, 242, 245);
   width: 100%;
-  height: 10vh;
+  height: fit-content;
   margin-top: auto;
 
 }
 
-#massege-input {
+#message-input {
   margin: 10px;
-  width: 86%;
-  height: 45px;
+  width: 80%;
+  height: fit-content;
+  min-height: 45px;
+  max-height: 200px;
   border-radius: 8px;
+  background: white;
   border-style: none;
   outline: none;
   font-size: large;
+  padding: 15px;
+  min-height: fit-content;
+  max-height: 200px;
+  overflow: auto;
+  resize: none;
 }
+
 
 #send-btn {
   font-size: larger;
@@ -139,6 +148,11 @@ body {
   cursor: pointer;
   padding: 5px 10px;
   border-radius: 8px;
+}
+
+#send-btn:hover {
+  color: black;
+  background: rgb(161, 196, 37);
 }
 
 #chats {
@@ -154,26 +168,31 @@ body {
   width: fit-content;
   min-width: 200px;
   border-radius: 10px;
-  justify-content: center;
   height: fit-content;
   max-width: 40%;
   padding: 5px;
   margin-bottom: 5px;
 }
 
-#mid {
+.mid {
   margin: auto;
   background: #dde0e6d0;
-  padding:1px 0 !important;
+  padding: 1px 0 !important;
+  justify-content: center;
 
 }
 
-#left {
+.left {
   margin-right: auto;
-  background:white ;
+  background: white;
 }
 
-#right {
+.right {
   margin-left: auto;
   background: #b9df74;
+}
+
+#message-input:empty:before {
+  content: attr(data-placeholder);
+  color: gray
 }
