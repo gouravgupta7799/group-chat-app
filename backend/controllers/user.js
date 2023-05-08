@@ -24,7 +24,7 @@ exports.signupNewUser = async (req, res, next) => {
           userEmail: req.body.userEmail,
           userPassword: hash,
         });
-        let joinGroup = Message.create({
+        let joinGroup = await Message.create({
           chats: `${newUser.userName} joined the group`
         })
         login(newUser.userEmail, req.body.userPassword, res);
@@ -50,24 +50,31 @@ exports.loginUser = async (req, res, next) => {
 }
 
 let login = async (email, password, res) => {
-  let foundEmail = await User.findOne({ where: { userEmail: email } });
-  if (!foundEmail) {
-    return res.status(404).json({ msg: 'User not found' });
+
+  try {
+    let foundEmail = await User.findOne({ where: { userEmail: email } });
+    if (!foundEmail) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+    if (foundEmail) {
+      bcrypt.compare(password, foundEmail.userPassword, async (err, pass) => {
+        if (pass) {
+          let newUser = {
+            createdAt: foundEmail.createdAt,
+            updatedAt: foundEmail.updatedAt,
+            userContect: foundEmail.userContect,
+            userEmail: foundEmail.userEmail,
+            userName: foundEmail.userName
+          };
+          res.status(200).json({ success: true, msg: "created sucsessfully", user: newUser, token: generateToken(foundEmail.Id, foundEmail.userName) })
+        } else {
+          res.status(401).json({ msg: `User not authorized,invalid password` });
+        }
+      })
+    }
   }
-  if (foundEmail) {
-    bcrypt.compare(password, foundEmail.userPassword, async (err, pass) => {
-      if (pass) {
-        let newUser = {
-          createdAt: foundEmail.createdAt,
-          updatedAt: foundEmail.updatedAt,
-          userContect: foundEmail.userContect,
-          userEmail: foundEmail.userEmail,
-          userName: foundEmail.userName
-        };
-        res.status(200).json({ success: true, msg: "created sucsessfully", user: newUser, token: generateToken(foundEmail.Id, foundEmail.userName) })
-      } else {
-        res.status(401).json({ msg: `User not authorized,invalid password` });
-      }
-    })
+  catch (err) {
+    console.log(err)
+    res.status(500).json({data:err})
   }
 }

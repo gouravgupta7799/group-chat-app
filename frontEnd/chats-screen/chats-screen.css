@@ -161,6 +161,7 @@ body {
   padding: 10px;
   background: rgb(239, 234, 226);
   overflow: auto;
+
 }
 
 #chats>div {
@@ -183,6 +184,9 @@ body {
 }
 
 .left {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
   margin-right: auto;
   background: white;
 }
@@ -195,4 +199,10 @@ body {
 #message-input:empty:before {
   content: attr(data-placeholder);
   color: gray
+}
+
+.message-user-name {
+  font-size: smaller;
+  background: #ebe9e9;
+
 }
