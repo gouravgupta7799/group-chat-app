@@ -1,3 +1,4 @@
+const { Op } = require("sequelize");
 const Message = require("../models/message");
 const User = require("../models/user");
 
@@ -19,8 +20,9 @@ exports.postChatMessage = (req, res, next) => {
 exports.getChatMessage = (req, res, next) => {
   try {
     let mainUserId = req.user.Id;
+    let lastUserId = req.query.lastUserId;
 
-    Message.findAll()
+    Message.findAll({ where: { id: { [Op.gt]: lastUserId } } })
       .then(data => {
         res.json({ data, mainUserId: mainUserId })
       });

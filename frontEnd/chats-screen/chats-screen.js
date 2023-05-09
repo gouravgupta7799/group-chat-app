@@ -6,6 +6,12 @@ let groupNameHeadline = document.getElementById('group-name-headline');
 let groups = document.getElementById('group-list');
 
 
+let lastUsedId = localStorage.getItem('lastUserId');
+if (lastUsedId === null) {
+  localStorage.setItem('lastUserId', JSON.stringify(0));
+}
+let lastUserId = JSON.parse(lastUsedId);
+
 
 // groups.addEventListener('click', (e) => {
 //   if (e.target.nodeName === 'LI') {
@@ -16,44 +22,36 @@ let groups = document.getElementById('group-list');
 // })
 
 //api call to get chats of the group
-let getGroupChat = (group) => {
+let getGroupChat = (group, arr, Id) => {
   chats.innerHTML = '';
-  axios.get(url, { headers: { 'Authorization': token, } })
-    .then(res => {
-      let userId = res.data.mainUserId
 
-      res.data.data.forEach(ele => {
-        // console.log(ele)
-        let div = document.createElement('div');
+  let userId = Id
+  arr.forEach(ele => {
+    let div = document.createElement('div');
 
-        if (ele.userId === null) {
-          div.className = 'mid'
-          div.innerHTML = ele.chats;
-        } else if (ele.userId === userId) {
-          div.className = 'right'
-          div.innerHTML = ele.chats;
-        } else {
-          div.className = 'left'
-          div.innerHTML = `<div class="message-user-name">${ele.name}</div> ${ele.chats}`;
-        }
-        chats.appendChild(div);
-      });
-      chats.scrollTop = chats.scrollHeight;
-    })
+    if (ele.userId === null) {
+      div.className = 'mid'
+      div.innerHTML = ele.chats;
+    } else if (ele.userId === userId) {
+      div.className = 'right'
+      div.innerHTML = ele.chats;
+    } else {
+      div.className = 'left'
+      div.innerHTML = `<div class="message-user-name">${ele.name}</div> ${ele.chats}`;
+    }
+    chats.appendChild(div);
+  });
+  chats.scrollTop = chats.scrollHeight;
+  // })
   // console.log(group);
 }
 
-setInterval(() => {
-getGroupChat('g1');
-
-}, 1500)
 
 let msg = document.getElementById('message-input')
 let sendBtn = document.getElementById('send-btn');
 
 sendBtn.addEventListener('click', () => {
 
-  console.log(msg.innerText);
   if (msg.innerText.trim() !== '') {
     let obj = {
       messages: msg.innerText.trim()
@@ -61,10 +59,44 @@ sendBtn.addEventListener('click', () => {
     axios.post(url, obj, { headers: { 'Authorization': token, } })
       .then(res => {
         msg.innerText = ''
-        getGroupChat('g1')
       })
       .catch(err => {
         console.log(err)
       })
   }
 });
+
+
+let localChats = localStorage.getItem('localChats');
+setInterval(() => {
+  saveInLocalChats()
+}, 1000)
+
+// save chats in localStorage
+function saveInLocalChats() {
+  if (localChats === null) {
+    let arr = [];
+    let chatsArr = JSON.stringify(arr);
+    localStorage.setItem('localChats', chatsArr);
+  } else {
+    let arr = JSON.parse(localChats);
+    axios.get(url + `?lastUserId=${lastUserId}`, { headers: { 'Authorization': token, } })
+      .then(res => {
+        let Id = res.data.mainUserId
+        let idd;
+        res.data.data.forEach(ele => {
+          arr.push(ele);
+          idd = ele.id
+        })
+        const lastTenMessages = arr.slice(-12)
+        if (idd === undefined) {
+          idd = lastUserId;
+        }
+        getGroupChat('g1', lastTenMessages, Id)
+        let newidd = JSON.stringify(idd)
+        localStorage.setItem('lastUserId', newidd)
+        let newArr = JSON.stringify(lastTenMessages);
+        localStorage.setItem('localChats', newArr);
+      })
+  }
+}
