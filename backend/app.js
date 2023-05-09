@@ -8,20 +8,29 @@ let app = express();
 app.use(cors());
 app.use(bodyparser.json({ extended: false }));
 
-let User = require('./models/user');
-let Message = require('./models/message');
+const User = require('./models/user');
+const Message = require('./models/message');
+const Groups = require('./models/groups');
 const sequelize = require('./utills/database');
 
 let userInfo = require('./routers/user');
 let messages = require('./routers/messages');
+let groups = require('./routers/groups');
 
 
 app.use('/user', userInfo);
 app.use('/messages', messages);
+app.use('/groups', groups);
 
 
 User.hasMany(Message);
 Message.belongsTo(User);
+
+Groups.hasMany(User);
+User.belongsTo(Groups);
+
+Groups.hasMany(Message);
+Message.belongsTo(Groups);
 
 sequelize
   // .sync({ force: true })

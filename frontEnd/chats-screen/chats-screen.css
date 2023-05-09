@@ -140,7 +140,7 @@ body {
 }
 
 
-#send-btn {
+.btn {
   font-size: larger;
   color: white;
   background: #08b81f;
@@ -150,7 +150,7 @@ body {
   border-radius: 8px;
 }
 
-#send-btn:hover {
+.btn:hover {
   color: black;
   background: rgb(161, 196, 37);
 }
@@ -205,4 +205,47 @@ body {
   font-size: smaller;
   background: #ebe9e9;
 
+}
+
+#create-new-group {
+  display: flex;
+  margin-left: auto;
+  cursor: pointer;
+  background: gray;
+  font-size: large;
+  padding: 5px 10px;
+  border-radius: 50%;
+}
+
+#create-new-group:hover {
+  background: rgb(173, 170, 170);
+}
+
+#group-form {
+  display: flex;
+  flex-direction: column;
+width: fit-content;
+  margin: 10px;
+}
+
+#group-form>input {
+  margin: 5px;
+}
+
+#asdf {
+  border: 1px solid black;
+  border-radius: 5px;
+  transform: translateX(50%);
+  position: fixed;
+  top: 50px;
+  right: 80%;
+}
+
+#create-input{
+  border-radius: 6px;
+  font-size: large;
+  border: none;
+  padding: 6px;
+  font-style: none;
+  outline: none;
 }
