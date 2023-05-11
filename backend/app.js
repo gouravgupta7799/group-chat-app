@@ -11,7 +11,9 @@ app.use(bodyparser.json({ extended: false }));
 const User = require('./models/user');
 const Message = require('./models/message');
 const Groups = require('./models/groups');
+const userGroups = require('./models/userGroups');
 const sequelize = require('./utills/database');
+
 
 let userInfo = require('./routers/user');
 let messages = require('./routers/messages');
@@ -26,11 +28,17 @@ app.use('/groups', groups);
 User.hasMany(Message);
 Message.belongsTo(User);
 
-Groups.hasMany(User);
-User.belongsTo(Groups);
+// User.belongsToMany(Groups, { through: Message });
+// Groups.belongsToMany(User, { through: Message });
 
 Groups.hasMany(Message);
 Message.belongsTo(Groups);
+
+User.hasMany(userGroups);
+userGroups.belongsTo(User);
+
+Groups.hasMany(userGroups);
+userGroups.belongsTo(Groups);
 
 sequelize
   // .sync({ force: true })

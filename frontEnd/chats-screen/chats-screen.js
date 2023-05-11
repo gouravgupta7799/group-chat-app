@@ -12,47 +12,52 @@ localStorage.setItem('lastUserId', JSON.stringify(0));
 let lastUsedId = localStorage.getItem('lastUserId');
 
 let lastUserId = JSON.parse(lastUsedId);
+
 // creating a New Group in DB
 createNewGroup.addEventListener('click', () => {
   let div1 = document.createElement('div');
-  div1.id = 'asdf';
+  div1.id = 'create-new-group-form';
   let div = document.createElement('div')
   div.innerHTML = `<div id="group-form">
             <input type="text" id="create-input" placeholder="group name">
             <button class="btn" id="create-group">create</button>
           </div>`
   leftHearder.appendChild(div1);
-  let asdf = document.getElementById('asdf')
-  asdf.appendChild(div);
+  let createNewGroupForm = document.getElementById('create-new-group-form')
+  createNewGroupForm.appendChild(div);
 
   let createGroup = document.getElementById('create-group');
   createGroup.addEventListener('click', () => {
     let groupName = document.getElementById('create-input').value
     axios.post(url + '/groups', { groupName: groupName }, { headers: { 'Authorization': token, } })
       .then(res => {
-        console.log(res)
+        localStorage.setItem('groupId', JSON.stringify(res.data.data.id));
+
         addGroup(res.data.data);
-      })
-    leftHearder.removeChild(asdf)
+      });
+    leftHearder.removeChild(createNewGroupForm);
   })
-})
+    .catch(err => { console.log(eer) });
+});
 
 showGroups();
 
 function showGroups() {
   axios.get(url + '/groups', { headers: { 'Authorization': token } })
     .then(res => {
-      let newRes = res.data.data
+      console.log(res.data)
+      let newRes = res.data.data;
       newRes.forEach(Response => {
         addGroup(Response);
-      })
+      });
     })
-}
+    .catch(err => console.log(err));
+};
 
 function addGroup(data) {
   let li = document.createElement('li');
   li.id = data.id;
-  li.innerHTML = data.groupName
+  li.innerHTML = data.groupName;
   groups.appendChild(li);
 }
 
@@ -61,12 +66,49 @@ groups.addEventListener('click', (e) => {
   if (e.target.nodeName === 'LI') {
     groupNameHeadline.innerHTML = e.target.innerHTML;
     let group = parseInt(e.target.id);
-    // saveInLocalChats(group);
+    saveInLocalChats(group);
     localStorage.setItem('localChats', JSON.stringify([]));
-    localStorage.setItem('lastUserId', JSON.stringify(0))
-    showGroupChatsMessage(group);
+    localStorage.setItem('groupId', JSON.stringify(group));
+  };
+});
+
+let localChats = localStorage.getItem('localChats');
+// setInterval(() => {
+  saveInLocalChats()
+// }, 1000)
+
+// save chats in localStorage
+function saveInLocalChats() {
+  console.log(1)
+  if (localChats === null) {
+    let arr = [];
+    let chatsArr = JSON.stringify(arr);
+    localStorage.setItem('localChats', chatsArr);
+  } else {
+    let arr = JSON.parse(localChats);
+    let groupId = JSON.parse(localStorage.getItem('groupId'));
+    axios.get(url + '/messages' + `?lastUserId=${lastUserId}&groupId=${groupId}`, { headers: { 'Authorization': token, } })
+      .then(res => {
+        console.log(res)
+        let Id = res.data.mainUserId
+        let idd;
+        res.data.data.forEach(ele => {
+          arr.push(ele);
+          idd = ele.id
+        })
+        const lastTenMessages = arr.slice(-12)
+        if (idd === undefined) {
+          idd = lastUserId;
+        }
+        getGroupChat(lastTenMessages, Id)
+        let newidd = JSON.stringify(idd)
+        localStorage.setItem('lastUserId', newidd)
+        let newArr = JSON.stringify(lastTenMessages);
+        localStorage.setItem('localChats', newArr);
+      })
   }
-})
+}
+
 
 //api call to get chats of the group
 let getGroupChat = (arr, Id) => {
@@ -89,7 +131,7 @@ let getGroupChat = (arr, Id) => {
     chats.appendChild(div);
   });
   chats.scrollTop = chats.scrollHeight;
-}
+};
 
 
 let msg = document.getElementById('message-input')
@@ -104,53 +146,12 @@ sendBtn.addEventListener('click', () => {
     let groupId = JSON.parse(localStorage.getItem('groupId'));
     axios.post(url + `/messages?groupId=${groupId}`, obj, { headers: { 'Authorization': token, } })
       .then(res => {
-        msg.innerText = ''
+        msg.innerText = '';
       })
       .catch(err => {
         console.log(err)
-      })
-  }
+      });
+  };
 });
 
-let localChats = localStorage.getItem('localChats');
-// setInterval(() => {
-saveInLocalChats()
-// }, 3000)
-
-// save chats in localStorage
-function saveInLocalChats() {
-  console.log(1)
-  if (localChats === null) {
-    let arr = [];
-    let chatsArr = JSON.stringify(arr);
-    localStorage.setItem('localChats', chatsArr);
-  } else {
-    let arr = JSON.parse(localChats);
-    let groupId = JSON.parse(localStorage.getItem('groupId'));
-    axios.get(url + '/messages' + `?lastUserId=${lastUserId}&groupId=${groupId}`, { headers: { 'Authorization': token, } })
-      .then(res => {
-        let Id = res.data.mainUserId
-        let idd;
-        res.data.data.forEach(ele => {
-          arr.push(ele);
-          idd = ele.id
-        })
-        const lastTenMessages = arr.slice(-12)
-        if (idd === undefined) {
-          idd = lastUserId;
-        }
-        getGroupChat(lastTenMessages, Id)
-        let newidd = JSON.stringify(idd)
-        localStorage.setItem('lastUserId', newidd)
-        let newArr = JSON.stringify(lastTenMessages);
-        localStorage.setItem('localChats', newArr);
-      })
-  }
-}
-
-
-function showGroupChatsMessage(id) {
-  localStorage.setItem('groupId', JSON.stringify(id));
-  let groupId = JSON.parse(localStorage.getItem('groupId'));
-}
 

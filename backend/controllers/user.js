@@ -24,9 +24,6 @@ exports.signupNewUser = async (req, res, next) => {
           userEmail: req.body.userEmail,
           userPassword: hash,
         });
-        let joinGroup = await Message.create({
-          chats: `${newUser.userName} joined the group`
-        })
         login(newUser.userEmail, req.body.userPassword, res);
       });
     };
@@ -75,6 +72,6 @@ let login = async (email, password, res) => {
   }
   catch (err) {
     console.log(err)
-    res.status(500).json({data:err})
+    res.status(500).json({ data: err })
   }
 }
