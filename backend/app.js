@@ -18,27 +18,31 @@ const sequelize = require('./utills/database');
 let userInfo = require('./routers/user');
 let messages = require('./routers/messages');
 let groups = require('./routers/groups');
+let adminPower = require('./routers/adminPower');
 
 
 app.use('/user', userInfo);
 app.use('/messages', messages);
 app.use('/groups', groups);
-
+app.use('/admin', adminPower)
 
 User.hasMany(Message);
 Message.belongsTo(User);
 
-// User.belongsToMany(Groups, { through: Message });
-// Groups.belongsToMany(User, { through: Message });
-
 Groups.hasMany(Message);
 Message.belongsTo(Groups);
+
+// User.belongsToMany(Groups, { through: Message });
+// Groups.belongsToMany(User, { through: Message });
 
 User.hasMany(userGroups);
 userGroups.belongsTo(User);
 
 Groups.hasMany(userGroups);
 userGroups.belongsTo(Groups);
+
+// User.belongsToMany(Groups, { through: userGroups });
+// Groups.belongsToMany(User, { through: userGroups });
 
 sequelize
   // .sync({ force: true })
