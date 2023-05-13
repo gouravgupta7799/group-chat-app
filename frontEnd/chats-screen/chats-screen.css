@@ -215,17 +215,24 @@ body {
   font-size: large;
   padding: 5px 10px;
   border-radius: 50%;
+
 }
 
 #create-new-group:hover {
   background: rgb(173, 170, 170);
 }
 
+#create-group {
+  width: 50%;
+}
+
 #group-form {
   display: flex;
   flex-direction: column;
-width: fit-content;
+  width: fit-content;
   margin: 10px;
+  justify-content: center;
+  align-items: center;
 }
 
 #group-form>input {
@@ -233,15 +240,123 @@ width: fit-content;
 }
 
 #create-new-group-form {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   border-radius: 5px;
-  transform: translateX(50%);
+  transform: translateX(48%);
   position: fixed;
   top: 50px;
   right: 80%;
+  background: white;
+  box-shadow: 0px 0px 10px 2px rgb(192, 190, 190);
+  display: none;
 }
 
-#create-input{
+#create-input {
+  border-radius: 6px;
+  font-size: large;
+  border: none;
+  padding: 6px;
+  font-style: none;
+  outline: none;
+  border: 1px solid grey;
+}
+
+
+#group-info-tab {
+  background: white;
+  width: 30%;
+  height: 100%;
+  box-shadow: -1px 1px 8px 1px rgba(0, 0, 0, 0.075);
+  border-radius: 5px;
+  transform: translateX(70%);
+  position: fixed;
+  top: 0.5px;
+  right: 21.5%;
+  /* display: none; */
+}
+
+.group-info-headline {
+  box-sizing: border-box;
+  background: rgb(240, 242, 245);
+  border-bottom: 1px solid rgb(233, 233, 233);
+  display: flex;
+  align-items: center;
+  height: 10vh;
+  padding: 0 15px;
+  width: 100%;
+  font-size: large;
+}
+
+#add-person {
+  background: rgb(233, 233, 233);
+  display: flex;
+  align-items: center;
+  width: auto;
+  height: 10vh;
+  justify-content: center;
+}
+
+#add-person:hover {
+  cursor: pointer;
+  background: rgba(160, 160, 160, 0.04);
+}
+
+#person-list {
+  height: 50%;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  box-shadow: 1px -1px 2px 1px gray;
+}
+
+#not-in-group {
+  height: 50%;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+  box-shadow: 1px -1px 2px 1px gray;
+}
+
+.group-info-content {
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#person-list>li {
+  overflow: hidden;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  font-size: larger;
+  border-bottom: 1px solid rgb(233, 233, 233);
+  height: 10vh;
+  list-style: none;
+}
+
+#not-in-group>li {
+  overflow: hidden;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  font-size: larger;
+  border-bottom: 1px solid rgb(233, 233, 233);
+  height: 10vh;
+  list-style: none;
+}
+
+.cancel {
+  display: flex;
+  width: 5%;
+  justify-content: center;
+  margin-right: 50px;
+  padding: 15px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: x-large;
+}
+
+#search-name {
   border-radius: 6px;
   font-size: large;
   border: none;

@@ -8,6 +8,16 @@ const userGroups = sequelize.define('userGroups', {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true
+  },
+  groupName: {
+    type: Sequelize.STRING
+  },
+  userName: {
+    type: Sequelize.STRING
+  },
+  isAdmin: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false
   }
 
 });

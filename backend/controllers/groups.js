@@ -14,16 +14,18 @@ exports.createNewGroup = async (req, res, next) => {
     await Message.create({
       chats: `${req.user.userName} joined the group`,
       userId: req.user.Id,
-      name: req.user.userName,
+      name: null,
       groupId: data.id
     })
 
     await userGroups.create({
       userId: req.user.Id,
-      groupId: data.id
+      groupId: data.id,
+      groupName: data.groupName,
+      userName: req.user.userName,
+      isAdmin: true
     })
-
-    res.status(201).json({ data })
+    res.status(201).json({ data });
   }
   catch (err) {
     console.log(err)
@@ -33,26 +35,13 @@ exports.createNewGroup = async (req, res, next) => {
 
 exports.getAllGroups = (req, res, next) => {
   try {
-    // console.log(req.query.groupId)
-
-    Groups.findAll()
+    userGroups.findAll({ where: { userId: req.user.Id } })
       .then(data => {
-        res.json({ data })
-        console.log(data)
-      })
+        res.json({ data });
+      });
   }
   catch (err) {
     console.log(err);
-    res.status(404).json(err)
-  }
-}
-
-
-// exports.getAllMessagesFromGroup = (req, res, next) => {
-//   // console.log(req.group)
-// console.log(1234)
-//   Message.findAll({ where: { groupId: req.query.groupId } })
-//     .then(ree => {
-//       console.log(ree)
-//     })
-// }
+    res.status(404).json(err);
+  };
+};

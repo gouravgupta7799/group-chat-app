@@ -3,36 +3,39 @@ const Message = require("../models/message");
 
 
 exports.postChatMessage = (req, res, next) => {
-  let chat = req.body.messages;
-  let groupId = req.query.groupId
-  // console.log(req.user)
+  try {
+    let chat = req.body.messages;
+    let groupId = req.query.groupId
 
-  Message.create({
-    chats: chat,
-    name: req.user.userName,
-    userId: req.user.Id,
-    groupId: parseInt(groupId)
-  })
+    Message.create({
+      chats: chat,
+      name: req.user.userName,
+      userId: req.user.Id,
+      groupId: parseInt(groupId)
+    })
 
-    .then(msg => res.status(201).json({ msg: msg }))
-    .catch(err => {
-      console.log(err)
-      res.status(400).json({ err: err });
-    });
+      .then(msg => res.status(201).json({ msg: msg }))
+      .catch(err => {
+        console.log(err)
+        res.status(400).json({ err: err });
+      });
+  }
+  catch (err) {
+    console.log(err)
+    res.json({err})
+  }
 };
 
 exports.getChatMessage = (req, res, next) => {
   try {
     let mainUserId = req.user.Id;
     let lastUserId = req.query.lastUserId;
-    let groupId = req.query.groupId;
-    console.log(groupId)
-    console.log(lastUserId)
+    let group = req.query.groupId;
+
     Message.findAll({
       where: {
         id: { [Op.gt]: lastUserId },
-        groupId: groupId,
-        userId: req.user.Id
+        groupId: group,
       }
     })
       .then(data => {
@@ -40,7 +43,7 @@ exports.getChatMessage = (req, res, next) => {
       });
   }
   catch (err) {
-    console.log(err)
-    res.status(404).send(err)
-  }
-}
+    console.log(err);
+    res.status(404).send(err);
+  };
+};
