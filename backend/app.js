@@ -26,6 +26,11 @@ app.use('/messages', messages);
 app.use('/groups', groups);
 app.use('/admin', adminPower)
 
+app.use('/frontend', express.static('frontend'))
+app.get("/", (req, res) => {
+  res.redirect("/frontend/logIn/login.html");
+})
+
 User.hasMany(Message);
 Message.belongsTo(User);
 
