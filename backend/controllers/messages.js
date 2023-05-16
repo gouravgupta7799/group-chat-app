@@ -13,8 +13,7 @@ exports.postChatMessage = (req, res, next) => {
       userId: req.user.Id,
       groupId: parseInt(groupId)
     })
-
-      .then(msg => res.status(201).json({ msg: msg }))
+      .then(msg => res.status(201).json({ msg: msg, mainuser: req.user.Id }))
       .catch(err => {
         console.log(err)
         res.status(400).json({ err: err });
@@ -22,7 +21,7 @@ exports.postChatMessage = (req, res, next) => {
   }
   catch (err) {
     console.log(err)
-    res.json({err})
+    res.json({ err })
   }
 };
 

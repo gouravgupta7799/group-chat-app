@@ -1,5 +1,9 @@
+// const { response } = require("express");
+
 
 let url = 'http://localhost:4000'
+const socket = io(`${url}`)
+
 let token = localStorage.getItem('token');
 let chats = document.getElementById('chats');
 let groupNameHeadline = document.getElementById('group-name-headline');
@@ -14,6 +18,14 @@ localStorage.setItem('localChats', JSON.stringify([]));
 let lastUsedId = localStorage.getItem('lastUserId');
 
 let lastUserId = JSON.parse(lastUsedId);
+
+socket.on("connect", () => {
+  console.log(`youre connected with id`)
+
+  socket.on("send-new-msg", (message) => {
+    saveInLocalChats()
+  })
+})
 
 // creating a New Group in DB
 createNewGroup.addEventListener('click', () => {
@@ -55,7 +67,6 @@ function addGroup(data) {
   groups.appendChild(li);
 }
 
-
 groups.addEventListener('click', (e) => {
   if (e.target.nodeName === 'LI') {
     groupNameHeadline.innerHTML = e.target.innerHTML;
@@ -67,9 +78,9 @@ groups.addEventListener('click', (e) => {
 });
 
 let localChats = localStorage.getItem('localChats');
-setInterval(() => {
-  saveInLocalChats();
-}, 1000);
+// setInterval(() => {
+saveInLocalChats();
+// }, 1000);
 
 
 //api call to get chats of the group
@@ -121,7 +132,7 @@ let getGroupChat = (arr, Id) => {
     }
     chats.appendChild(div);
   });
-  chats.scrollTop = chats.scrollHeight;
+  // chats.scrollTop = chats.scrollHeight;
 };
 
 // send messages
@@ -136,6 +147,7 @@ sendBtn.addEventListener('click', () => {
     let groupId = JSON.parse(localStorage.getItem('groupId'));
     axios.post(url + `/messages?groupId=${groupId}`, obj, { headers: { 'Authorization': token, } })
       .then(res => {
+        socket.emit("new-chat", res.data)
         msg.innerText = '';
       })
       .catch(err => {

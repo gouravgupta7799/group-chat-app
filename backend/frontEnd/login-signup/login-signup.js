@@ -72,7 +72,7 @@ loginForm.addEventListener('submit', async (e) => {
       showNotification(createNotification('Account loged successfully', SUCCESS_COLOR));
       localStorage.setItem('token', response.data.token);
       setTimeout(() => {
-        location.href = 'http://127.0.0.1:5500/chats-screen/chats-screen.html';
+        location.href = 'http://127.0.0.1:5500/frontend/chats-screen/chats-screen.html';
       }, 3000);
       console.log(response);
     })
@@ -94,7 +94,7 @@ signupForm.addEventListener('submit', async (e) => {
       showNotification(createNotification('Account created successfully', SUCCESS_COLOR));
       localStorage.setItem('token', response.data.token);
       setTimeout(() => {
-        location.href = 'http://127.0.0.1:5500/chats-screen/chats-screen.html';
+        location.href = 'http://127.0.0.1:5500/frontend/chats-screen/chats-screen.html';
       }, 3000);
     })
     .catch((error) => {

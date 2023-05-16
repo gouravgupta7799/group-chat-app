@@ -8,6 +8,19 @@ let app = express();
 app.use(cors());
 app.use(bodyparser.json({ extended: false }));
 
+const http = require('http')
+const socketIO = require('socket.io')
+
+const server = http.createServer(app)
+const io = socketIO(server, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type'],
+    credentials: true
+  }
+})
+
 const User = require('./models/user');
 const Message = require('./models/message');
 const Groups = require('./models/groups');
@@ -25,6 +38,11 @@ app.use('/user', userInfo);
 app.use('/messages', messages);
 app.use('/groups', groups);
 app.use('/admin', adminPower)
+
+app.use('/frontend', express.static('frontend'))
+app.get("/", (req, res) => {
+  res.redirect("/frontEnd/login-signup/login-signup.html");
+})
 
 User.hasMany(Message);
 Message.belongsTo(User);
@@ -50,4 +68,17 @@ sequelize
   .catch(err => console.log(err))
 
 
-app.listen(4000);
+// app.listen(4000);
+io.on('connection', socket => {
+  console.log('a user connected')
+
+  socket.on('new-chat', (message) => {
+    io.emit('send-new-msg', message)
+  })
+
+})
+
+server.listen(4000, () => {
+  console.log(`server started on port`)
+})
+
