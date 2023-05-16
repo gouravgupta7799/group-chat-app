@@ -28,7 +28,7 @@ app.use('/admin', adminPower)
 
 app.use('/frontend', express.static('frontend'))
 app.get("/", (req, res) => {
-  res.redirect("/frontend/logIn/login.html");
+  res.redirect("/frontend/chats-screen/chats-screen.html");
 })
 
 User.hasMany(Message);
