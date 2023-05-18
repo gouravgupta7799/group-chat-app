@@ -51,6 +51,7 @@ exports.addToGroup = async (req, res, next) => {
       chats: `${user.userName} add to group`,
       userId: user.Id,
       name: null,
+      urlfile: null,
       groupId: data.id
     });
 
@@ -97,3 +98,14 @@ exports.removePerson = async (req, res, next) => {
     res.json({ err });
   };
 };
+
+exports.allUserNot = async (req, res, next) => {
+  let group = req.query.groupId;
+
+  let data = await userGroups.findAll({
+    include: User,
+    where: { groupId: { [Op.ne]: group } }
+  })
+
+  res.json({ data })
+}

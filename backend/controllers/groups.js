@@ -13,8 +13,9 @@ exports.createNewGroup = async (req, res, next) => {
 
     await Message.create({
       chats: `${req.user.userName} joined the group`,
-      userId: req.user.Id,
       name: null,
+      urlfile: null,
+      userId: req.user.Id,
       groupId: data.id
     })
 

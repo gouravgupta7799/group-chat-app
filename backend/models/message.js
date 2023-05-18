@@ -14,7 +14,10 @@ const Message = sequelize.define('messages', {
   },
   name: {
     type: Sequelize.STRING,
-  }
+  },
+  urlfile: {
+    type: Sequelize.STRING,
+  },
 });
 
 module.exports = Message;

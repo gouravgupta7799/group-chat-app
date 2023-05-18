@@ -364,3 +364,13 @@ body {
   font-style: none;
   outline: none;
 }
+
+#inputTag {
+  display: none;
+}
+
+label {
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+}

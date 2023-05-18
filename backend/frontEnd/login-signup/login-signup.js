@@ -1,7 +1,7 @@
 const SUCCESS_COLOR = '#59B259';
 const FAILURE_COLOR = '#D2504D';
 
-let url = 'http://localhost:4000/user'
+let url = 'http://localhost:4000'
 let token = localStorage.getItem('token');
 
 let loginTab = document.getElementById('login-tab');
@@ -67,12 +67,12 @@ loginForm.addEventListener('submit', async (e) => {
     userEmail: document.getElementById('loginUserEmail').value,
     userPassword: document.getElementById('loginUserPassword').value
   };
-  axios.post(url + '/login', obj, { headers: { 'Content-Type': 'application/json' } })
+  axios.post(url + '/user/login', obj, { headers: { 'Content-Type': 'application/json' } })
     .then((response) => {
       showNotification(createNotification('Account loged successfully', SUCCESS_COLOR));
       localStorage.setItem('token', response.data.token);
       setTimeout(() => {
-        location.href = 'http://127.0.0.1:5500/chats-screen/chats-screen.html';
+        location.href = `${url}/frontEnd/chats-screen/chats-screen.html`;
       }, 3000);
       console.log(response);
     })
@@ -89,12 +89,12 @@ signupForm.addEventListener('submit', async (e) => {
     userPassword: document.getElementById('signupUserPassword').value,
     userContect: document.getElementById('signupUserContect').value
   }
-  axios.post(url + '/signup', obj, { headers: { 'Content-Type': 'application/json' } })
+  axios.post(url + '/user/signup', obj, { headers: { 'Content-Type': 'application/json' } })
     .then((response) => {
       showNotification(createNotification('Account created successfully', SUCCESS_COLOR));
       localStorage.setItem('token', response.data.token);
       setTimeout(() => {
-        location.href = 'http://127.0.0.1:5500/chats-screen/chats-screen.html';
+        location.href = `${url}/frontEnd/chats-screen/chats-screen.html`;
       }, 3000);
     })
     .catch((error) => {

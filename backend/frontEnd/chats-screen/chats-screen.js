@@ -67,9 +67,9 @@ groups.addEventListener('click', (e) => {
 });
 
 let localChats = localStorage.getItem('localChats');
-setInterval(() => {
+// setInterval(() => {
   saveInLocalChats();
-}, 1000);
+// }, 1000);
 
 
 //api call to get chats of the group
@@ -114,10 +114,18 @@ let getGroupChat = (arr, Id) => {
       div.innerHTML = ele.chats;
     } else if (ele.userId === userId) {
       div.className = 'right'
-      div.innerHTML = ele.chats;
+      if (ele.chats === null) {
+        div.innerHTML = `<img src="${ele.urlfile}" alt="img"  width='400px'/>`;
+      } else {
+        div.innerHTML = ele.chats;
+      }
     } else {
       div.className = 'left'
-      div.innerHTML = `<div class="message-user-name">${ele.name}</div> ${ele.chats}`;
+      if (ele.chats === null) {
+        div.innerHTML = `<img src="${ele.urlfile}" alt="img" height="50px" width="50px />`;
+      } else {
+        div.innerHTML = `<div class="message-user-name">${ele.name}</div> ${ele.chats}`;
+      }
     }
     chats.appendChild(div);
   });
@@ -174,9 +182,30 @@ groupNameHeadline.addEventListener('click', (e) => {
     //list of all member in group
     let groupId = JSON.parse(localStorage.getItem('groupId'));
     let personList = document.getElementById('person-list');
+
+    axios.get(url + `/admin/allUserNot/?groupId=${groupId}`, { headers: { 'Authorization': token } })
+      .then(data => {
+        console.log(data)
+        let notInGroup = document.getElementById('not-in-group');
+        data.data.data.forEach(data => {
+          let li = document.createElement('li');
+          if (data.groupId !== groupId) {
+            li.innerHTML = `${data.userName}
+            <button onclick="addMe(${data.userId},${groupId})">add</button>`;
+          } else {
+            li.innerHTML = `${data.userName} already in a group`;
+          }
+          notInGroup.appendChild(li);
+        })
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
+
     axios.get(url + `/admin/allUser/?groupId=${groupId}`, { headers: { 'Authorization': token } })
       .then(data => {
-        let activeUser = data.data.activeUser;
+        // let activeUser = data.data.activeUser;
         data.data.data.forEach(person => {
 
           let li = document.createElement('li');
@@ -194,7 +223,6 @@ groupNameHeadline.addEventListener('click', (e) => {
       .catch(err => console.log(err));
   }
 })
-
 // remove from group function
 function removePerson(id, groupId) {
   axios.post(url + '/admin/removePerson', { id: id, groupId: groupId }, { headers: { 'Authorization': token } })
@@ -266,3 +294,16 @@ function addNewParticipant() {
   })
 };
 
+// sending media or Img
+
+let media = document.getElementById('inputTag');
+
+media.addEventListener('change', () => {
+  let inputTag = document.querySelector("input[type=file]").files;
+  // console.log(inputTag)
+  var formData = new FormData();
+  formData.append("file", inputTag[0]);
+  axios.post(url + '/messages/sendImg?groupId=1', formData, { headers: { 'Authorization': token } })
+    .then(ee => console.log(ee))
+
+})

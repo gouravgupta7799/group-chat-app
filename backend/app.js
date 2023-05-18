@@ -28,7 +28,7 @@ app.use('/admin', adminPower)
 
 app.use('/frontend', express.static('frontend'))
 app.get("/", (req, res) => {
-  res.redirect("/frontend/chats-screen/chats-screen.html");
+  res.redirect("/frontEnd/login-signup/login-signup.html");
 })
 
 User.hasMany(Message);
@@ -55,4 +55,4 @@ sequelize
   .catch(err => console.log(err))
 
 
-app.listen(4000);
+app.listen(process.env.PORT);

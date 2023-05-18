@@ -11,5 +11,6 @@ routers.get('/allUser', auth.authorizerUser, controller.allUser);
 routers.post('/makeAdmin', auth.authorizerUser, controller.makeAdmin);
 routers.post('/removePerson', auth.authorizerUser, controller.removePerson);
 
+routers.get('/allUserNot', auth.authorizerUser, controller.allUserNot);
 
 module.exports = routers;
