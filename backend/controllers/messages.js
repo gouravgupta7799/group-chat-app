@@ -1,7 +1,7 @@
 const { Op } = require("sequelize");
 const Message = require("../models/message");
 const AWS = require('aws-sdk');
-
+const ArchivedChat = require('../models/archive');
 
 exports.postChatMessage = (req, res, next) => {
   try {
@@ -107,4 +107,37 @@ exports.sendImg = async (req, res, next) => {
     console.log(err)
     res.status(500).json({ 'error': err })
   }
+}
+
+exports.archiveChat = async () => {
+  // Calculate the date 1 day ago
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  // Find all the messages in the Chat table that are 1 day old
+
+  const messages = await Message.findAll({
+    where: {
+      createdAt: {
+        [Op.lt]: yesterday
+      }
+    }
+  });
+  console.log(messages)
+  // Move the messages to the ArchivedChat table
+  await ArchivedChat.bulkCreate(messages.map(m => ({
+
+    message: m.chats,
+    from: m.name,
+    groupId: m.groupId
+  })));
+
+  // Delete the messages from the Chat table
+  await Message.destroy({
+    where: {
+      createdAt: {
+        [Op.lt]: yesterday
+      }
+    }
+  });
 }

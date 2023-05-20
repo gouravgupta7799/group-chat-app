@@ -12,21 +12,23 @@ const User = require('./models/user');
 const Message = require('./models/message');
 const Groups = require('./models/groups');
 const userGroups = require('./models/userGroups');
+const ArchivedChat = require('./models/archive');
 const sequelize = require('./utills/database');
-
+const cron = require("node-cron");
 
 let userInfo = require('./routers/user');
 let messages = require('./routers/messages');
 let groups = require('./routers/groups');
 let adminPower = require('./routers/adminPower');
 
+let chatController = require("./controllers/messages");
 
 app.use('/user', userInfo);
 app.use('/messages', messages);
 app.use('/groups', groups);
-app.use('/admin', adminPower)
+app.use('/admin', adminPower);
+app.use('/frontend', express.static('frontend'));
 
-app.use('/frontend', express.static('frontend'))
 app.get("/", (req, res) => {
   res.redirect("/frontEnd/login-signup/login-signup.html");
 })
@@ -48,6 +50,9 @@ userGroups.belongsTo(Groups);
 
 // User.belongsToMany(Groups, { through: userGroups });
 // Groups.belongsToMany(User, { through: userGroups });
+
+
+cron.schedule('0 0 * * *', chatController.archiveChat);
 
 sequelize
   // .sync({ force: true })

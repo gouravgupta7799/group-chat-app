@@ -68,8 +68,8 @@ groups.addEventListener('click', (e) => {
 
 let localChats = localStorage.getItem('localChats');
 // setInterval(() => {
-  saveInLocalChats();
-// }, 1000);
+saveInLocalChats();
+// }, 3000);
 
 
 //api call to get chats of the group
@@ -109,6 +109,7 @@ let getGroupChat = (arr, Id) => {
   let userId = Id;
   arr.forEach(ele => {
     let div = document.createElement('div');
+    console.log(ele)
     if (ele.name === null) {
       div.className = 'mid';
       div.innerHTML = ele.chats;
@@ -299,11 +300,12 @@ function addNewParticipant() {
 let media = document.getElementById('inputTag');
 
 media.addEventListener('change', () => {
+  let groupId = localStorage.getItem('groupId');
   let inputTag = document.querySelector("input[type=file]").files;
   // console.log(inputTag)
   var formData = new FormData();
   formData.append("file", inputTag[0]);
-  axios.post(url + '/messages/sendImg?groupId=1', formData, { headers: { 'Authorization': token } })
+  axios.post(url + `/messages/sendImg?groupId=${groupId}`, formData, { headers: { 'Authorization': token } })
     .then(ee => console.log(ee))
 
 })
